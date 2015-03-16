@@ -7,7 +7,7 @@ freshly founded working group.
 
 * Tristan Nitot (Cozy)
 * Paul Tran-Van (Cozy)
-* Pablo Ojanguren (Swel)
+* Pablo Ojanguren (Swell)
 * Pierre Ozoux (IndieHosters)
 * Michiel de Jong (indieHosters / remoteStorage)
 * Auli Kutt (OuiShare Labs)
@@ -25,7 +25,7 @@ freshly founded working group.
     * create a document
     * update a document
     * delete a document
-  * for each of there operations, a proxy can translate http requests:
+  * for each of these operations, a proxy can translate http requests:
     * from remoteStorage to CouchDB
     * from remoteStorage to Wave-bot-API
     * from Wave-bot-API to CouchDB
@@ -37,4 +37,4 @@ freshly founded working group.
     * server type (remoteStorage/Swell/Cozy)
     * access token
   * once a folder is shared, the servers can post operations back and forth to each other
-  * operations that would result in conflict (file name collision or simultaneous update) simply fail with an error.
+  * operations that would result in conflict (file name collision or simultaneous update) simply fails with an error.
