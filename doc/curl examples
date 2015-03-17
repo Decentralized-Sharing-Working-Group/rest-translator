@@ -1,0 +1,3 @@
+#reoteStorage
+
+curl -v 'https://109.107.37.164/dswg/`date +%s`' -X PUT -H 'Host: storage.5apps.com' -H 'If-None-Match: "*"' -H 'Authorization: Bearer e8368b5e74b7dddc62ed468fdbf13617' --data 'asdf'
