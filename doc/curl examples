@@ -1,3 +1,14 @@
-#reoteStorage
+#remoteStorage
 
 curl -v 'https://109.107.37.164/dswg/`date +%s`' -X PUT -H 'Host: storage.5apps.com' -H 'If-None-Match: "*"' -H 'Authorization: Bearer e8368b5e74b7dddc62ed468fdbf13617' --data 'asdf'
+
+#Cozy + CouchDB
+
+To replicate (and so share) documents from a CouchDB server to another one.
+The continuous option is for synchronization
+curl -X POST https://<yourcouchdbserver>/_replicate -d '{"source":"<db_name>", "target":"<target_server_url>", "continuous":true, "doc_ids":["<doc1_id>", "<doc2_id>"]}' -H "Content-Type: application/json"
+
+To just POST a document to a CouchDB server : 
+curl -X PUT https://<yourcouchdbserver>/<db_name>/<doc_id> -d '{"title":"mydoctest","whatever":"I want"}'
+
+
