@@ -6,9 +6,9 @@ curl -v 'https://109.107.37.164/dswg/`date +%s`' -X PUT -H 'Host: storage.5apps.
 
 To replicate (and so share) documents from a CouchDB server to another one.
 The continuous option is for synchronization
-curl -X POST https://<yourcouchdbserver>/_replicate -d '{"source":"<db_name>", "target":"<target_server_url>", "continuous":true, "doc_ids":["<doc1_id>", "<doc2_id>"]}' -H "Content-Type: application/json"
+curl -X POST https://<login:password>@<yourcouchdbserver>/_replicate -d '{"source":"<db_name>", "target":"<target_server_url>", "continuous":true, "doc_ids":["<doc1_id>", "<doc2_id>"]}' -H "Content-Type: application/json"
 
 To just POST a document to a CouchDB server : 
-curl -X PUT https://<yourcouchdbserver>/<db_name>/<doc_id> -d '{"title":"mydoctest","whatever":"I want"}'
-
-
+curl -X PUT https://<login:password>@<yourcouchdbserver>/<db_name>/<doc_id> -d '{"title":"mydoctest","whatever":"I want"}'
+And if you want to add an attachment to this document (an image for example) : 
+curl -vX PUT https://<login:password>@<yourcouchdbserver>/<db_name>/<doc_id>/<attachment_name> --data-binary @<binary_file> -H "Content-Type: image/jpg"
