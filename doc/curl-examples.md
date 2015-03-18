@@ -33,10 +33,18 @@ curl -vX PUT {:databaseURL}/{:filename}/raw
     --data-binary @{:fileondisk}
     -H "Authorization: {:authorizationHeader}" -H "Content-Type: {:contentType}"
     
-NOTE: @Gara64 is still setting up the test instance with exposed CouchDB, but testing with local CouchDB in admin party mode works:
+Testing with local CouchDB in admin party mode works:
 ````bash
 curl -vX PUT http://localhost:5984/database/doc/attachment --data-binary @/usr/share/doc/nodejs/full-white-stripe.jpg -H "Content-Type: image/jpg"
 curl -vX GET http://localhost:5984/database/doc/attachment
+````
+
+Here is an actual working example for this cozy : https://paulsharing2.cozycloud.cc
+````bash
+#Document creation : 
+curl -vX POST https://Upsc0D0Xruhe9bj5qB3U4HcZidDEkAgd:dC4KvlfBwqriMJ3aCAjG6qLddPkPgr5z@paulsharing2.cozycloud.cc/cozy/ -H 'Content-Type: application/json'  -d '{"doctest": "mydoctest"}'
+#Put the attachment : 
+curl -vX PUT https://Upsc0D0Xruhe9bj5qB3U4HcZidDEkAgd:dC4KvlfBwqriMJ3aCAjG6qLddPkPgr5z@paulsharing2.cozycloud.cc/cozy/<doc_id>/attachment?rev=<rev> --data-binary @<image_path> -H "Content-Type: image/jpg"
 ````
 
 # To send this file to a Swell server:
