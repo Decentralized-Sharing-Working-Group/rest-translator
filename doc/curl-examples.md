@@ -33,7 +33,7 @@ curl -vX PUT {:databaseURL}/{:filename}/raw
     --data-binary @{:fileondisk}
     -H "Authorization: {:authorizationHeader}" -H "Content-Type: {:contentType}"
     
-NOTE: @Gara75 is still setting up the test instance with exposed CouchDB, but testing with local CouchDB in admin party mode works:
+NOTE: @Gara64 is still setting up the test instance with exposed CouchDB, but testing with local CouchDB in admin party mode works:
 ````bash
 curl -vX PUT http://localhost:5984/database/doc/attachment --data-binary @/usr/share/doc/nodejs/full-white-stripe.jpg -H "Content-Type: image/jpg"
 curl -vX GET http://localhost:5984/database/doc/attachment
