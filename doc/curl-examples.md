@@ -2,7 +2,7 @@
 
 * `{:filename}` is a unique UTF-8 string (no file with that name had been uploaded before)
 * `{:contentType}` is an ASCII string
-* `{:body}` is a binary blob
+* `{:fileondisk}` is the local file on disk
 
 # To send this file to a remoteStorage server:
 
@@ -12,7 +12,7 @@ Given the remoteStorage server details:
 * `{:authorizationHeader}` is of the form `Bearer asrtgewrghrereghertgawer==`
 
 curl -vX PUT {:databaseURL}/{:filename}
-    --data-binary @/usr/share/doc/nodejs/full-white-stripe.jpg
+    --data-binary @{:fileondisk}
     -H "Authorization: {:authorizationHeader}" -H "Content-Type: {:contentType}"
 
 NOTE: here is an example server:
@@ -30,7 +30,7 @@ Given the Cozy server details:
 Send the file in this way (the string 'raw' is arbitrary here):
 
 curl -vX PUT {:databaseURL}/{:filename}/raw
-    --data-binary @/usr/share/doc/nodejs/full-white-stripe.jpg
+    --data-binary @{:fileondisk}
     -H "Authorization: {:authorizationHeader}" -H "Content-Type: {:contentType}"
     
 NOTE: @Gara75 is still setting up the test instance with exposed CouchDB, but testing with local CouchDB in admin party mode works:
@@ -49,7 +49,7 @@ Given the Swell server details (the string 'shared' is arbitrary and the '/share
 Send the file in this way:
 
 curl -vX PUT {:databaseURL}/{:filename}
-    --data-binary @/usr/share/doc/nodejs/full-white-stripe.jpg
+    --data-binary @{:fileondisk}
     -H "Authorization: {:authorizationHeader}" -H "Content-Type: {:contentType}"
 
 NOTE: @pablojan is still adding this functionality to Swell, it requires some changes in the Java code.
