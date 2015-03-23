@@ -17,7 +17,7 @@ function run() {
       form.parse(req, function(err, fields, files) {
         //todo: use form.onPart to stream this directly instead of via disk:
         stream = fs.createReadStream(files['file-contents'].path);
-        translator.send(fields['server-host'], fields['server-port'], fields['base-path'], fields['auth-header'],
+        translator.send(fields['server-host'], fields['server-port'], fields['base-path'], fields.credentials,
             fields['remote-filename'], files['file-contents'].type, stream, fields['server-type'], function (err, data) {
           res.writeHead(200, {'content-type': 'text/plain'});
           res.write('received upload:\n\n');
