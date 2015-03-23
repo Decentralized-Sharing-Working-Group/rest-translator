@@ -33,4 +33,8 @@ node client.js --in=example.png --content-type=image/png --remote-file-name=`dat
 
 ## Method 3: Any-to-any proxy
 
-(coming soon)
+Example (put this in front of your remoteStorage server to get a Cozy API to it for free):
+
+````bash
+node translator --server-type-front=cozy --server-type-back=remotestorage --host-back=storage.5apps.com --port-back=443 --base-path-back=/dswg/test/ --port-front=8124 --credentials-back=3a0d6830acea73605bde4e919b107886 --credentials-front=asdf
+````
