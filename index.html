@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Server-to-Server sync</title>
+  </head>
+  <body>
+    <form target="" enctype="multipart/form-data" method="POST">
+      <div>
+        <label for="server-type">Server type:</label>
+        <select id="server-type" name="server-type">
+          <option value="remotestorage">remotestorage</option>
+          <option value="cozy">cozy</option>
+          <option value="owncloud">owncloud</option>
+        </select>
+      </div>
+ 
+      <div>
+        <label for="server-host">Server host:</label>
+        <input type="text" id="server-host" name="server-host">
+ 
+        <label for="server-port">Server port:</label>
+        <input type="text" id="server-port" name="server-port">
+      </div>
+ 
+      <div>
+        <label for="base-path">Base path:</label>
+        <input type="text" id="base-path" name="base-path">
+
+        <label for="remote-filename">Remote filename:</label>
+        <input type="text" id="remote-filename" name="remote-filename">
+      </div>
+ 
+      <div>
+        <label for="auth-header">Auth header:</label>
+        <input type="text" id="auth-header" name="auth-header">
+      </div>
+ 
+      <div>
+        <input type="file" name="file-contents">
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  </body>
+ <script>
+   function fillExample() {
+     if (document.getElementById('server-type').value === 'remotestorage') {
+       document.getElementById('server-host').value = 'storage.5apps.com';
+       document.getElementById('server-port').value = '443';
+       document.getElementById('base-path').value = '/dswg/test/';
+       document.getElementById('remote-filename').value = new Date().getTime().toString();
+       document.getElementById('auth-header').value = 'Bearer 3a0d6830acea73605bde4e919b107886';
+     } else if (document.getElementById('server-type').value === 'cozy') {
+       document.getElementById('server-host').value = 'paulsharing2.cozycloud.cc';
+       document.getElementById('server-port').value = '443';
+       document.getElementById('base-path').value = '/cozy/';
+       document.getElementById('remote-filename').value = new Date().getTime().toString();
+       document.getElementById('auth-header').value = 'Basic VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=';
+     } else if (document.getElementById('server-type').value === 'owncloud') {
+       document.getElementById('server-host').value = 'owncloud.michielbdejong.com';
+       document.getElementById('server-port').value = '443';
+       document.getElementById('base-path').value = '/remote.php/webdav/';
+       document.getElementById('remote-filename').value = new Date().getTime().toString();
+       document.getElementById('auth-header').value = 'Basic b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp';
+     } else {
+       document.getElementById('server-host').value = '';
+       document.getElementById('server-port').value = '';
+       document.getElementById('base-path').value = '';
+       document.getElementById('remote-filename').value = '';
+       document.getElementById('auth-header').value = '';
+     }
+   }
+
+   //...
+   document.getElementById('server-type').onchange = fillExample;
+   fillExample();
+  </script> 
+</html>
