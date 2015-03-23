@@ -13,6 +13,7 @@
           <option value="cozy">cozy</option>
           <option value="owncloud">owncloud</option>
           <option value="swell">swell</option>
+          <option value="cozy-to-rs">cozy-to-rs</option>
         </select>
       </div>
  
@@ -22,6 +23,9 @@
  
         <label for="server-port">Server port:</label>
         <input type="text" id="server-port" name="server-port">
+
+        <input type="checkbox" id="disable-tls" name="disable-tls">
+        <label for="disable-tls">Disable TLS</label>
       </div>
  
       <div>
@@ -54,6 +58,7 @@
      if (document.getElementById('server-type').value === 'remotestorage') {
        document.getElementById('server-host').value = 'storage.5apps.com';
        document.getElementById('server-port').value = '443';
+       document.getElementById('disable-tls').checked = false;
        document.getElementById('base-path').value = '/dswg/test/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
        document.getElementById('credentials').value = '3a0d6830acea73605bde4e919b107886';
@@ -66,6 +71,7 @@
      } else if (document.getElementById('server-type').value === 'owncloud') {
        document.getElementById('server-host').value = 'owncloud.michielbdejong.com';
        document.getElementById('server-port').value = '443';
+       document.getElementById('disable-tls').checked = false;
        document.getElementById('base-path').value = '/remote.php/webdav/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
        document.getElementById('credentials').value = 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp';
@@ -75,6 +81,13 @@
        document.getElementById('base-path').value = '/shared/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
        document.getElementById('credentials').value = 'YXVzZXJuYW1lOmFwYXNzd29yZA==';
+     } else if (document.getElementById('server-type').value === 'cozy-to-rs') {
+       document.getElementById('server-host').value = 'localhost';
+       document.getElementById('server-port').value = '8124';
+       document.getElementById('disable-tls').checked = true;
+       document.getElementById('base-path').value = '/';
+       document.getElementById('remote-filename').value = new Date().getTime().toString();
+       document.getElementById('credentials').value = 'asdf';
      } else {
        document.getElementById('server-host').value = '';
        document.getElementById('server-port').value = '';
