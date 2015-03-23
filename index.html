@@ -32,8 +32,8 @@
       </div>
  
       <div>
-        <label for="auth-header">Auth header:</label>
-        <input type="text" id="auth-header" name="auth-header">
+        <label for="auth-header">Credentials:</label>
+        <input type="text" id="credentials" name="credentials">
       </div>
  
       <div>
@@ -49,25 +49,25 @@
        document.getElementById('server-port').value = '443';
        document.getElementById('base-path').value = '/dswg/test/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
-       document.getElementById('auth-header').value = 'Bearer 3a0d6830acea73605bde4e919b107886';
+       document.getElementById('credentials').value = '3a0d6830acea73605bde4e919b107886';
      } else if (document.getElementById('server-type').value === 'cozy') {
        document.getElementById('server-host').value = 'paulsharing2.cozycloud.cc';
        document.getElementById('server-port').value = '443';
        document.getElementById('base-path').value = '/cozy/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
-       document.getElementById('auth-header').value = 'Basic VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=';
+       document.getElementById('credentials').value = 'VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=';
      } else if (document.getElementById('server-type').value === 'owncloud') {
        document.getElementById('server-host').value = 'owncloud.michielbdejong.com';
        document.getElementById('server-port').value = '443';
        document.getElementById('base-path').value = '/remote.php/webdav/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
-       document.getElementById('auth-header').value = 'Basic b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp';
+       document.getElementById('credentials').value = 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp';
      } else {
        document.getElementById('server-host').value = '';
        document.getElementById('server-port').value = '';
        document.getElementById('base-path').value = '';
        document.getElementById('remote-filename').value = '';
-       document.getElementById('auth-header').value = '';
+       document.getElementById('credentials').value = '';
      }
    }
 

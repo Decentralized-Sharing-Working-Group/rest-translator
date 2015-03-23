@@ -1,52 +1,15 @@
 var translator = require('./lib/translator'),
-    yargv = require('yargs'),
+    checkArgs = require('./lib/args').checkArgs,
     fs = require('fs'),
-    requiredArgs = ['in', 'content-type', 'remote-file-name', 'server-type', 'host', 'port', 'base-path'];
-
-function checkArgs() {
-  var argv = yargv.argv, problem = false;
-  requiredArgs.forEach(function(option) {
-    if (!argv[option]) {
-      console.log('Please specify a --' + option + ' option!');
-      problem = true;
-    }
-  });
-  if (argv.serverType === 'remotestorage') {
-    if (!argv['my-token']) {
-      console.log('Request to remoteStorage server requires --my-token');
-      problem = true;
-    }
-  } else if (argv.serverType === 'cozy' || argv.serverType === 'swell' || argv.serverType === 'owncloud') {
-    if (!argv['my-username']) {
-      console.log('Request to remoteStorage server requires --my-password');
-      problem = true;
-    }
-    if (!argv['my-password']) {
-      console.log('Request to remoteStorage server requires --my-password');
-      problem = true;
-    }
-  } else if (argv.serverType) {
-    console.log('Server type not supported', argv.serverType);
-    problem = true;
-  }
-  if (!problem) {
-    return argv;
-  }
-}
-
-function getAuthorizationHeader(argv) {
-  if (argv.serverType === 'remotestorage') {
-    return 'Bearer ' + argv.myToken;
-  } else {
-    return 'Basic ' + new Buffer(argv.myUsername + ':' + argv.myPassword).toString('base64');
-  }
-}
+    sslRootCAs = require('ssl-root-cas/latest'),
+    requiredArgs = ['in', 'content-type', 'remote-file-name', 'server-type', 'host', 'port', 'base-path', 'credentials'];
 
 function run() {
-  var argv = checkArgs();
+  sslRootCAs.inject().addFile('./ca.pem');
+  var argv = checkArgs(requiredArgs);
   if (argv) {
     var stream = fs.createReadStream(argv['in']);
-    translator.send(argv.host, argv.port, argv.basePath, getAuthorizationHeader(argv),
+    translator.send(argv.host, argv.port, argv.basePath, argv.credentials,
         argv.remoteFileName, argv.contentType, stream, argv.serverType, function (err, data) {
       console.log(err, data);
     });
