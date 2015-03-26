@@ -5,14 +5,14 @@ First real project of this working group.
 
 # Usage (requires nodejs):
 
-## Method 1: html form upload, translated to remoteStorage/Cozy/ownCloud (Swell coming soon!)
+## Method 1: html form upload, translated to remoteStorage/Cozy/ownCloud/Swell
 
 ````bash
 npm install
 npm start
 ````
 
-## Method 2: Command line to remoteStorage/Cozy/ownCloud (Swell coming soon!)
+## Method 2: Command line to remoteStorage/Cozy/ownCloud/Swell
 
 To create a credentials hash from a username and password, run:
 
@@ -29,6 +29,9 @@ node client.js --in=example.png --content-type=image/png --remote-file-name=`dat
 
 echo sending file to example ownCloud server
 node client.js --in=example.png --content-type=image/png --remote-file-name=`date +%s%N` --server-type=owncloud --host=owncloud.michielbdejong.com --port=443 --base-path=/remote.php/webdav/ --credentials=b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp
+
+echo sending file to example Swell server
+node client.js --in=example.png --content-type=image/png --remote-file-name=`date +%s%N` --server-type=swell --host=wave.p2pvalue.eu --port=443 --base-path=/shared/ --credentials=YXVzZXJuYW1lOmFwYXNzd29yZA==
 ````
 
 ## Method 3: Any-to-any proxy

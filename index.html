@@ -12,6 +12,7 @@
           <option value="remotestorage">remotestorage</option>
           <option value="cozy">cozy</option>
           <option value="owncloud">owncloud</option>
+          <option value="swell">swell</option>
         </select>
       </div>
  
@@ -62,6 +63,12 @@
        document.getElementById('base-path').value = '/remote.php/webdav/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
        document.getElementById('credentials').value = 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp';
+     } else if (document.getElementById('server-type').value === 'swell') {
+       document.getElementById('server-host').value = 'wave.p2pvalue.eu';
+       document.getElementById('server-port').value = '443';
+       document.getElementById('base-path').value = '/shared/';
+       document.getElementById('remote-filename').value = new Date().getTime().toString();
+       document.getElementById('credentials').value = 'YXVzZXJuYW1lOmFwYXNzd29yZA==';
      } else {
        document.getElementById('server-host').value = '';
        document.getElementById('server-port').value = '';

@@ -56,7 +56,10 @@ curl -vX PUT {:databaseURL}/{:filename}
     --data-binary @{:fileondisk}
     -H "Authorization: {:authorizationHeader}" -H "Content-Type: {:contentType}"
 
-NOTE: @pablojan is still adding this functionality to Swell, it requires some changes in the Java code.
+Here is an example server:
+````bash
+curl -vX PUT https://wave.p2pvalue.eu/shared/`date +%s%N` --data-binary @<image_path> -H "Authorization: Basic YXVzZXJuYW1lOmFwYXNzd29yZA==" -H "Content-Type: image/png"
+````
 
 Comparison:
 * remoteStorage - Swell: the only difference 'Bearer' vs. 'Basic' in the Authorization header
