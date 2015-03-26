@@ -10,7 +10,7 @@ function run() {
   if (argv) {
     var stream = fs.createReadStream(argv['in']);
     translator.send(argv.host, argv.port, argv.basePath, argv.credentials,
-        argv.remoteFileName, argv.contentType, stream, argv.serverType, false, function (err, data) {
+        argv.remoteFileName, argv.contentType, stream, argv.serverType, undefined, function (err, data) {
       console.log(err, data);
     });
   }

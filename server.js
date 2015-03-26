@@ -15,10 +15,16 @@ function run() {
     } else {
       form = new formidable.IncomingForm();
       form.parse(req, function(err, fields, files) {
+        var tlsConf; // leave undefined for default behavior
+        if (fields['disable-tls']) {
+          tlsConf = 'http';
+        } else if (fields['allow-self-signed']) {
+          tlsConf = 'allow-self-signed';
+        }
         //todo: use form.onPart to stream this directly instead of via disk:
         stream = fs.createReadStream(files['file-contents'].path);
         translator.send(fields['server-host'], fields['server-port'], fields['base-path'], fields.credentials,
-            fields['remote-filename'], files['file-contents'].type, stream, fields['server-type'], fields['disable-tls'],
+            fields['remote-filename'], files['file-contents'].type, stream, fields['server-type'], tlsConf,
             function (err, data) {
           res.writeHead(200, {'content-type': 'text/plain'});
           res.write('received upload:\n\n');
