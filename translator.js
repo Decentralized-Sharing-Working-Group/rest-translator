@@ -46,7 +46,7 @@ console.log(req.headers);
         res.end('please match the translator\'s --credentials-front argument in your Authorization header');
       }
     }).listen(argv['port-front']);
-    console.log('There is now a ' + argv['server-type-front'] + ' server on http://localhost:' + argv['port-front']);
+    console.log('There is now a ' + argv['server-type-front'] + ' to ' + argv['server-type-back'] + ' translator on http://localhost:' + argv['port-front']);
   }
 }
 

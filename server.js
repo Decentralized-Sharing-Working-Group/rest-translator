@@ -17,8 +17,12 @@ function run() {
       form.parse(req, function(err, fields, files) {
         //todo: use form.onPart to stream this directly instead of via disk:
         stream = fs.createReadStream(files['file-contents'].path);
+        var serverType = fields['proxy-front'];
+        if (serverType === 'no-proxy') {
+          serverType = fields['server-type'];
+        }
         translator.send(fields['server-host'], fields['server-port'], fields['base-path'], fields.credentials,
-            fields['remote-filename'], files['file-contents'].type, stream, fields['server-type'], fields['disable-tls'],
+            fields['remote-filename'], files['file-contents'].type, stream, serverType, fields['disable-tls'],
             function (err, data) {
           res.writeHead(200, {'content-type': 'text/plain'});
           res.write('received upload:\n\n');
@@ -27,7 +31,7 @@ function run() {
       });
     }
   }).listen(8123);
-  console.log('See http://localhost:8123');
+  console.log('See http://localhost:8123 for a web interface!');
 }
 
 //...
