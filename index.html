@@ -38,12 +38,18 @@
       </div>
  
       <div>
-        <input type="file" name="file-contents">
-        <input type="submit" value="Submit">
+        <input type="file" id="file-contents" name="file-contents">
+        <input type="submit" value="Submit" onclick="checkFile();">
       </div>
     </form>
   </body>
  <script>
+   function checkFile() {
+     if (document.getElementById('file-contents').value === '') {
+       alert('Please select a file by clicking \'Browse...\' on the left first!');
+     }
+   }
+
    function fillExample() {
      if (document.getElementById('server-type').value === 'remotestorage') {
        document.getElementById('server-host').value = 'storage.5apps.com';
