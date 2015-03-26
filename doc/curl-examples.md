@@ -41,10 +41,7 @@ curl -vX GET http://localhost:5984/database/doc/attachment
 
 Here is an actual working example for this cozy : https://paulsharing2.cozycloud.cc
 ````bash
-#Document creation : 
-curl -vX POST https://Upsc0D0Xruhe9bj5qB3U4HcZidDEkAgd:dC4KvlfBwqriMJ3aCAjG6qLddPkPgr5z@paulsharing2.cozycloud.cc/cozy/ -H 'Content-Type: application/json'  -d '{"doctest": "mydoctest"}'
-#Put the attachment : 
-curl -vX PUT https://Upsc0D0Xruhe9bj5qB3U4HcZidDEkAgd:dC4KvlfBwqriMJ3aCAjG6qLddPkPgr5z@paulsharing2.cozycloud.cc/cozy/<doc_id>/attachment?rev=<rev> --data-binary @<image_path> -H "Content-Type: image/jpg"
+curl -vX PUT https://Upsc0D0Xruhe9bj5qB3U4HcZidDEkAgd:dC4KvlfBwqriMJ3aCAjG6qLddPkPgr5z@paulsharing2.cozycloud.cc/cozy/`date +%s`/raw --data-binary @<image_path> -H "Content-Type: image/jpg"
 ````
 
 # To send this file to a Swell server:
