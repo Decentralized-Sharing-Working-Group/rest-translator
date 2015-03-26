@@ -17,8 +17,7 @@ curl -vX PUT {:databaseURL}/{:filename}
 
 NOTE: here is an example server:
 
-curl -v 'https://109.107.37.164/dswg/`date +%s`' -X PUT -H 'Host: storage.5apps.com'
-    -H 'If-None-Match: "*"' -H 'Authorization: Bearer e8368b5e74b7dddc62ed468fdbf13617' --data 'asdf'
+curl -v https://storage.5apps.com/dswg/`date +%s%N` -X PUT -H 'If-None-Match: "*"' -H 'Authorization: Bearer e8368b5e74b7dddc62ed468fdbf13617' --data 'asdf'
 
 # To send this file to a Cozy server:
 
@@ -41,7 +40,7 @@ curl -vX GET http://localhost:5984/database/doc/attachment
 
 Here is an actual working example for this cozy : https://paulsharing2.cozycloud.cc
 ````bash
-curl -vX PUT https://Upsc0D0Xruhe9bj5qB3U4HcZidDEkAgd:dC4KvlfBwqriMJ3aCAjG6qLddPkPgr5z@paulsharing2.cozycloud.cc/cozy/`date +%s`/raw --data-binary @<image_path> -H "Content-Type: image/jpg"
+curl -vX PUT https://Upsc0D0Xruhe9bj5qB3U4HcZidDEkAgd:dC4KvlfBwqriMJ3aCAjG6qLddPkPgr5z@paulsharing2.cozycloud.cc/cozy/`date +%s%N`/raw --data-binary @<image_path> -H "Content-Type: image/jpg"
 ````
 
 # To send this file to a Swell server:
