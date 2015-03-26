@@ -17,7 +17,7 @@
     "test": "npm run test-mocha && npm run test-jshint",
     "test-mocha": "mocha",
     "test-jshint": "jshint ./*.js ./lib/*.js --config ./test/.jshintrc",
-    "start": "node server.js"
+    "start": "./startall.sh"
   },
   "main": "server.js"
 }
