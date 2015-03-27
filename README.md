@@ -34,6 +34,10 @@ echo sending file to example Swell server
 node client.js --in=example.png --content-type=image/png --remote-file-name=`date +%s%N` --server-type=swell --host=wave.p2pvalue.eu --port=443 --base-path=/shared/ --credentials=YXVzZXJuYW1lOmFwYXNzd29yZA==
 ````
 
+* For servers that have self-signed certificates, set the `--tls-conf=allow-self-signed` option.
+* For servers that run http instead of https, set the `--tls-conf=http` option.
+* If you see zero bytes files appearing on your server, check if your webserver [supports chunked transfer encoding](http://sabre.io/dav/0bytes/) (lighttpd is known to violate the http/1.1 spec here).
+
 ## Method 3: Any-to-any proxy
 
 Sixteen proxy examples (put this in front of your remoteStorage server to get a Cozy API to it for free):
