@@ -24,30 +24,31 @@ function determineFilename(urlPath, serverType) {
   }
 }
 
-function handler(req, res) {
-  console.log(req.headers);
-  if (checkCredentials(req.headers.authorization, argv['server-type-front'], argv['credentials-front'])) {
-    translator.send(argv['host-back'], argv['port-back'], argv['base-path-back'], argv['credentials-back'],
-        determineFilename(req.url, argv['server-type-front']), req.headers['content-type'], req,
-        argv['server-type-back'], false, function (err, data) {
-      if (err) {
-        res.writeHead(500);
-        res.end(err.toString());
-      } else {
-        res.writeHead(data.statusCode, data.responseHeaders);
-        res.end(data.responseBody);
-      }
-    });
-  } else {
-    res.writeHead(401);
-    res.end('please match the translator\'s --credentials-front argument in your Authorization header');
-  }
-}
-
 function run() {
   var argv = checkArgs(['server-type-front', 'server-type-back', 'host-back', 'port-back', 'base-path-back', 'port-front',
                  'credentials-back', 'credentials-front']);
   sslRootCAs.inject().addFile('./ca.pem');
+
+  function handler(req, res) {
+    console.log(req.headers);
+    if (checkCredentials(req.headers.authorization, argv['server-type-front'], argv['credentials-front'])) {
+      translator.send(argv['host-back'], argv['port-back'], argv['base-path-back'], argv['credentials-back'],
+          determineFilename(req.url, argv['server-type-front']), req.headers['content-type'], req,
+          argv['server-type-back'], false, function (err, data) {
+        if (err) {
+          res.writeHead(500);
+          res.end(err.toString());
+        } else {
+          res.writeHead(data.statusCode, data.responseHeaders);
+          res.end(data.responseBody);
+        }
+      });
+    } else {
+      res.writeHead(401);
+      res.end('please match the translator\'s --credentials-front argument in your Authorization header');
+    }
+  }
+
   if (argv) {
     if (fs.existsSync('./server.pfx')) {
       https.createServer({ pfx: fs.readFileSync('./server.pfx') }, handler).listen(argv['port-front']);
