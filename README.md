@@ -59,3 +59,12 @@ node translator --server-type-front=cozy --server-type-back=swell --host-back=wa
 node translator --server-type-front=owncloud --server-type-back=swell --host-back=wave.p2pvalue.eu --port-back=443 --base-path-back=/shared/ --port-front=8243 --credentials-back=YXVzZXJuYW1lOmFwYXNzd29yZA== --credentials-front=asdf
 node translator --server-type-front=swell --server-type-back=swell --host-back=wave.p2pvalue.eu --port-back=443 --base-path-back=/shared/ --port-front=8244 --credentials-back=YXVzZXJuYW1lOmFwYXNzd29yZA== --credentials-front=asdf
 ````
+
+# Method 4: Starting everything on server-to-server.michielbdejong.com
+
+Run:
+
+````bash
+npm install -g forever
+./startall.sh
+````
