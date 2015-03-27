@@ -98,11 +98,11 @@
        }
      } else {
        var typeIndex = { remotestorage: '1', cozy: '2', owncloud: '3', swell: '4' };
-       document.getElementById('server-host').value = 'localhost';
+       document.getElementById('server-host').value = 'server-to-server.michielbdejong.com';
        document.getElementById('server-port').value = '82'
            + (typeIndex[document.getElementById('server-type')])
            + (typeIndex[document.getElementById('proxy-front')]);
-       document.getElementById('disable-tls').checked = true;
+       document.getElementById('disable-tls').checked = false;
        document.getElementById('base-path').value = '/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
        document.getElementById('credentials').value = 'asdf';
