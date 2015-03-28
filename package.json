@@ -16,7 +16,7 @@
   "scripts": {
     "test": "npm run test-mocha && npm run test-jshint",
     "test-mocha": "mocha",
-    "test-jshint": "jshint ./*.js ./lib/*.js --config ./test/.jshintrc",
+    "test-jshint": "jshint ./*.js ./src/*.js --config ./test/.jshintrc",
     "start": "./startall.sh"
   },
   "main": "server.js"

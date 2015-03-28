@@ -1,4 +1,4 @@
-var translator = require('./lib/translator'),
+var translator = require('./src/translator'),
     https = require('https'),
     http = require('http'),
     fs = require('fs'),
@@ -22,8 +22,10 @@ function handler(req, res) {
       }
       //todo: use form.onPart to stream this directly instead of via disk:
       stream = fs.createReadStream(files['file-contents'].path);
-      translator.send(fields['server-host'], fields['server-port'], fields['base-path'], fields.credentials,
-          fields['remote-filename'], files['file-contents'].type, stream, fields['server-type'], tlsConf,
+      var send = translator.makeSend( tlsConf === 'http' ? http : https );
+      var serverType = ( fields['proxy-front'] === 'no-proxy' ? fields['server-type'] : fields['proxy-front'] );
+      send(fields['server-host'], fields['server-port'], fields['base-path'], fields.token,
+          fields['remote-filename'], files['file-contents'].type, stream, serverType, tlsConf,
           function (err, data) {
         res.writeHead(200, {'content-type': 'text/plain'});
         res.write('received upload:\n\n');
