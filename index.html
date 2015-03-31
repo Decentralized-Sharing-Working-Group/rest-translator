@@ -47,8 +47,8 @@
       </div>
  
       <div>
-        <label for="auth-header">Credentials:</label>
-        <input type="text" id="credentials" name="credentials">
+        <label for="auth-header">Token:</label>
+        <input type="text" id="token" name="token">
       </div>
  
       <div>
@@ -65,6 +65,32 @@
    }
 
    function fillExample() {
+     var token = {
+       '10': '3a0d6830acea73605bde4e919b107886',
+       '11': '3a0d6830acea73605bde4e919b107886',
+       '12': 'Z3Vlc3Q6M2EwZDY4MzBhY2VhNzM2MDViZGU0ZTkxOWIxMDc4ODY=',
+       '13': 'Z3Vlc3Q6M2EwZDY4MzBhY2VhNzM2MDViZGU0ZTkxOWIxMDc4ODY=',
+       '14': 'Z3Vlc3Q6M2EwZDY4MzBhY2VhNzM2MDViZGU0ZTkxOWIxMDc4ODY=',
+
+       '20': 'VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=',
+       '21': 'VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=',
+       '22': 'VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=',
+       '23': 'VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=',
+       '24': 'VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=',
+
+       '30': 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp',
+       '31': 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp',
+       '32': 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp',
+       '33': 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp',
+       '34': 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp',
+
+       '40': 'YXVzZXJuYW1lOmFwYXNzd29yZA==',
+       '41': 'YXVzZXJuYW1lOmFwYXNzd29yZA==',
+       '42': 'YXVzZXJuYW1lOmFwYXNzd29yZA==',
+       '43': 'YXVzZXJuYW1lOmFwYXNzd29yZA==',
+       '44': 'YXVzZXJuYW1lOmFwYXNzd29yZA=='
+     };
+
      if (document.getElementById('proxy-front').value === 'no-proxy') {
        if (document.getElementById('server-type').value === 'remotestorage') {
          document.getElementById('server-host').value = 'storage.5apps.com';
@@ -72,32 +98,32 @@
          document.getElementById('disable-tls').checked = false;
          document.getElementById('base-path').value = '/dswg/test/';
          document.getElementById('remote-filename').value = new Date().getTime().toString();
-         document.getElementById('credentials').value = '3a0d6830acea73605bde4e919b107886';
+         document.getElementById('token').value = token['10'];
        } else if (document.getElementById('server-type').value === 'cozy') {
          document.getElementById('server-host').value = 'paulsharing2.cozycloud.cc';
          document.getElementById('server-port').value = '443';
          document.getElementById('base-path').value = '/cozy/';
          document.getElementById('remote-filename').value = new Date().getTime().toString();
-         document.getElementById('credentials').value = 'VXBzYzBEMFhydWhlOWJqNXFCM1U0SGNaaWRERWtBZ2Q6ZEM0S3ZsZkJ3cXJpTUozYUNBakc2cUxkZFBrUGdyNXo=';
+         document.getElementById('token').value = token['20'];
        } else if (document.getElementById('server-type').value === 'owncloud') {
          document.getElementById('server-host').value = 'owncloud.michielbdejong.com';
          document.getElementById('server-port').value = '443';
          document.getElementById('disable-tls').checked = false;
          document.getElementById('base-path').value = '/remote.php/webdav/';
          document.getElementById('remote-filename').value = new Date().getTime().toString();
-         document.getElementById('credentials').value = 'b2h5dUg4RWlwaWUxY2hvbzVzaGFpc2hlZXphaVNvaDJhdG91ZjNhYTphaENlMW9hYm9oMmFlcGhvbzVrYWhnaGFlbjlsZWFRdWFpMHpvb2tp';
+         document.getElementById('token').value = token['30'];
        } else if (document.getElementById('server-type').value === 'swell') {
          document.getElementById('server-host').value = 'wave.p2pvalue.eu';
          document.getElementById('server-port').value = '443';
          document.getElementById('base-path').value = '/shared/';
          document.getElementById('remote-filename').value = new Date().getTime().toString();
-         document.getElementById('credentials').value = 'YXVzZXJuYW1lOmFwYXNzd29yZA==';
+         document.getElementById('token').value = token['40'];
        } else {
          document.getElementById('server-host').value = '';
          document.getElementById('server-port').value = '';
          document.getElementById('base-path').value = '';
          document.getElementById('remote-filename').value = '';
-         document.getElementById('credentials').value = '';
+         document.getElementById('token').value = '';
        }
      } else {
        var typeIndex = { remotestorage: '1', cozy: '2', owncloud: '3', swell: '4' };
@@ -108,7 +134,8 @@
        document.getElementById('disable-tls').checked = false;
        document.getElementById('base-path').value = '/';
        document.getElementById('remote-filename').value = new Date().getTime().toString();
-       document.getElementById('credentials').value = 'asdf';
+       document.getElementById('token').value = token['' +
+           typeIndex[document.getElementById('server-type').value] + typeIndex[document.getElementById('proxy-front').value] ];
      }
    }
 

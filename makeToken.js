@@ -1,4 +1,4 @@
-var checkArgs = require('./lib/args').checkArgs;
+var checkArgs = require('./src/args').checkArgs;
 
 function run() {
   var argv = checkArgs(['username', 'password']);
