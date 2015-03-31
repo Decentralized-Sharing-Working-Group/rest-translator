@@ -24,8 +24,8 @@ function handler(req, res) {
       stream = fs.createReadStream(files['file-contents'].path);
       var send = translator.makeSend( tlsConf === 'http' ? http : https );
       var serverType = ( fields['proxy-front'] === 'no-proxy' ? fields['server-type'] : fields['proxy-front'] );
-      send(fields['server-host'], fields['server-port'], fields['base-path'], fields.token,
-          fields['remote-filename'], files['file-contents'].type, stream, serverType, tlsConf,
+      send(fields.operation, fields['server-host'], fields['server-port'], fields['base-path'], fields.token,
+          fields['remote-filename'], files['file-contents'].type, stream, serverType, fields['existing-etag'], tlsConf,
           function (err, data) {
         res.writeHead(200, {'content-type': 'text/plain'});
         res.write('received upload:\n\n');
