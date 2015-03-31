@@ -1,19 +1,36 @@
 function makeSend(requestLib) {
-  return function(backendHost, backendPort, backendPath, token, filename, contentType, stream, formatOut, tlsConf, callback) {
-    console.log('send', backendHost, backendPort, backendPath, token, filename, contentType, stream, formatOut, tlsConf, callback);
+  return function(operation, backendHost, backendPort, backendPath, token, filename, contentType,
+      stream, formatOut, existingETag, tlsConf, callback) {
+    console.log('send', operation, backendHost, backendPort, backendPath, token, filename, contentType,
+         stream, formatOut, existingETag, tlsConf, callback);
+    var verb = {
+      create: 'PUT',
+      read: 'GET',
+      update: 'PUT',
+      'delete': 'DELETE'
+    };
+    var streamDirection = {
+      create: 'in',
+      read: 'out',
+      update: 'in'
+    };
     var options = {
       hostname: backendHost,
       port: backendPort,
-      method: 'PUT',
+      method: verb[operation],
       path: backendPath
           + filename
           + (formatOut === 'cozy' ? '/raw' : ''),
       headers: {
-        'If-None-Match': '*',
         'Content-Type': contentType,
         Authorization: (formatOut === 'remotestorage' ? 'Bearer ' : 'Basic ') + token
       }
     };
+    if (existingETag) {
+      options.headers['If-Match'] = '"' + existingETag + '"';
+    } else if (operation==='create') {
+      options.headers['If-None-Match'] = '*';
+    }
     if (tlsConf === 'allow-self-signed') {
       options.rejectUnauthorized = false;
     }
@@ -26,9 +43,14 @@ function makeSend(requestLib) {
         responseBody: ''
       };
   
-      res.on('data', function(chunk) {
-        ret.responseBody += chunk.toString('utf-8');
-      });
+      if (streamDirection[operation] === 'out') {
+        res.pipe(stream);
+        ret.responseBody = '(streamed)';
+      } else {
+        res.on('data', function(chunk) {
+          ret.responseBody += chunk.toString('utf-8');
+        });
+      }
   
       res.on('error', function(err) {
         callback(err);
@@ -38,7 +60,12 @@ function makeSend(requestLib) {
         callback(null, ret);
       });
     });
-    stream.pipe(req);
+
+    if (streamDirection[operation] === 'in') {
+      stream.pipe(req);
+    } else {
+      req.end();
+    }
   };
 }
 
@@ -69,15 +96,32 @@ function determineFilename(urlPath, serverType) {
   }
 }
 
-function makeHandler(argv, requestLib) {
-  var send = makeSend(requestLib);
+function determineOperation(req) {
+  if (req.verb === 'GET') {
+    return 'read';
+  } else if (req.verb === 'DELETE') {
+    return 'delete';
+  } else if (determineExistingETag(req)) {
+    return 'update';
+  } else {
+    return 'create';
+  }
+}
+
+function determineExistingETag(req) {
+  return req.headers['If-Match'];
+}
+
+function makeHandler(argv, send) {
   return function(req, res) {
     console.log(req.headers);
-    send(argv.hostBack, argv.portBack,
+    send(determineOperation(req), argv.hostBack, argv.portBack,
         argv.basePathBack, translateAuthHeader(argv.serverTypeFront, argv.serverTypeBack, req.headers.authorization),
         determineFilename(req.url, argv.serverTypeFront),
         req.headers['content-type'], req,
-        argv.serverTypeBack, argv.tlsConfBack, function (err, data) {
+        argv.serverTypeBack,
+        determineExistingETag(req),
+        argv.tlsConfBack, function (err, data) {
       if (err) {
         res.writeHead(500);
         res.end(err.toString());

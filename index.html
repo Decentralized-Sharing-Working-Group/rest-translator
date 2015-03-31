@@ -22,6 +22,13 @@
           <option value="owncloud">owncloud</option>
           <option value="swell">swell</option>
         </select>
+        <label for="operation">Operation:</label>
+        <select id="operation" name="operation">
+          <option value="create">create</option>
+          <option value="read">read</option>
+          <option value="update">update</option>
+          <option value="delete">delete</option>
+        </select>
       </div>
  
       <div>
@@ -49,6 +56,9 @@
       <div>
         <label for="auth-header">Token:</label>
         <input type="text" id="token" name="token">
+
+        <label for="auth-header">Existing ETag:</label>
+        <input type="text" id="existing-etag" name="existing-etag">
       </div>
  
       <div>

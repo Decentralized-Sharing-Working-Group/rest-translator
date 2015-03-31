@@ -8,7 +8,7 @@ describe('the send function returned by translator.makeSend', function(){
     var stub = {
       request: function (options) {
         return {
-          send: function() {}
+          end: function() {}
         }
       }
     };

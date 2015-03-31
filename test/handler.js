@@ -7,13 +7,7 @@ describe('the handler function returned by translator.makeHandler', function(){
   it('should handle a simple request', function(done){
     var argv = {
     };
-    var stub = {
-      request: function (options) {
-        return {
-          send: function() {}
-        }
-      }
-    };
+    var stub = function() {};
     var handler = translator.makeHandler(argv, stub);
     handler({
       url: '/',
