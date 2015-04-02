@@ -5,7 +5,8 @@
   "dependencies": {
     "yargs": "*",
     "formidable": "*",
-    "ssl-root-cas": "latest"
+    "ssl-root-cas": "latest",
+    "request": "*"
   },
   "devDependencies": {
     "jshint": "2.5.X",
