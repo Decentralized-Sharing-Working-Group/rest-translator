@@ -119,11 +119,84 @@ function serveOwnCloudStatus(res) {
   res.end('{"installed":true,"maintenance":false,"version":"8.0.0.7","versionstring":"8.0","edition":""}');
 }
 
+function displayReceiveDialog(res) {
+  fs.createReadStream('./receiveDialog.html').pipe(res);
+}  
+function fetch(serverTypeFront, shareParams, callback) {
+  var fetchOptions, remoteStringParts, req;
+  console.log('getFetchOptions', serverTypeFront, shareParams);
+  if (serverTypeFront === 'owncloud') {
+    remoteStringParts = shareParams.remote.substring('https://'.length).split(':');
+    fetchOptions = {
+      hostname: remoteStringParts[0],
+      port: (remoteStringParts.length > 1 ? Number(remoteStringParts[1]) : 443),
+      method: 'GET',
+      path: '/index.php/s/' + shareParams.token + '/download'
+    };
+  } else {
+    console.log('do not know how to receive a share from a ' + serverTypeFront + ' server.');
+    return;
+  }
+  req = https.request(fetchOptions, callback);
+  req.send();
+}
+
+function makeAuthHeader(serverTypeBack, usernameBack, passwordBack) {
+  if (serverTypeBack === 'remotestorage') {
+    return 'Bearer ' + passwordBack;
+  } else {
+    return 'Basic ' + new Buffer(usernameBack + ':' + passwordBack).toString('base64');
+  }
+}
+function fetchAndDeliver(argv, send, fields) {
+  fetch(argv.serverTypeFront, fields.shareParams, function(res) {
+    var authHeaderBack = makeAuthHeader(argv.serverTypeBack, fields.username, fields.password);
+    send('create', argv.hostBack, argv.portBack, argv.basePathBack, authHeaderBack, shareParams.token /*used as the filename here*/,
+        res.headers['content-type'], req /*used as a stream here*/,
+        argv.serverTypeBack, undefined, undefined, function(err, data) {
+      console.log('fetched and delivered', shareParams, err, data);
+    });
+  });
+}
+function receiveFormPost(req, res, callback) {
+  form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, files) {
+    if (err) {
+      res.writeHead(500);
+      res.end(err);
+    } else {
+      callback(fields);
+    }
+  });
+}
+function determineRedirectUrl(argv, filename) {
+  if (argv.serverTypeBack === 'remotestorage') {
+    return 'https://' + argv.hostBack + ':' + argv.portBack + argv.basePathBack + '/public/shares/' + filename;
+  }
+}
+
 function makeHandler(argv, send) {
   return function(req, res) {
     console.log('req.url', req.url);
     if (req.url === '/status.php' && argv.serverTypeFront === 'owncloud') {
       serveOwnCloudStatus(res);
+    } else if (req.url === '/index.php/apps/files' && argv.serverTypeFront === 'owncloud') {
+      if (req.method === 'GET') {
+        displayReceiveDialog(res);
+      } else {
+        receiveFormPost(req, res, function(fields) {
+          fetchAndDeliver(argv, send, fields, function(err, filename) {
+            if (err) {
+              res.writeHead(500);
+              res.end(err);
+            } else {
+              res.writeHead(301, {
+                Location: determineRedirectUrl(argv, filename)
+              });
+            }
+          });
+        });
+      }
     } else {
       console.log(req.headers);
       send(determineOperation(req), argv.hostBack, argv.portBack,
