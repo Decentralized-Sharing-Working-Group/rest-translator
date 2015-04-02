@@ -112,25 +112,35 @@ function determineExistingETag(req) {
   return req.headers['If-Match'];
 }
 
+function serveOwnCloudStatus(res) {
+  res.writeHead(200);
+  res.end('{"installed":true,"maintenance":false,"version":"8.0.0.7","versionstring":"8.0","edition":""}');
+}
+
 function makeHandler(argv, send) {
   return function(req, res) {
-    console.log(req.headers);
-    send(determineOperation(req), argv.hostBack, argv.portBack,
-        argv.basePathBack, translateAuthHeader(argv.serverTypeFront, argv.serverTypeBack, req.headers.authorization),
-        determineFilename(req.url, argv.serverTypeFront),
-        req.headers['content-type'], req,
-        argv.serverTypeBack,
-        determineExistingETag(req),
-        argv.tlsConfBack, function (err, data) {
-      if (err) {
-        res.writeHead(500);
-        res.end(err.toString());
-      } else {
-        res.writeHead(data.statusCode, data.responseHeaders);
-        res.end(data.responseBody);
-      }
-    });
+    if (req.url === '/status.php' && argv.serverTypeFront === 'owncloud') {
+      serveOwnCloudStatus(res);
+    } else {
+      console.log(req.headers);
+      send(determineOperation(req), argv.hostBack, argv.portBack,
+          argv.basePathBack, translateAuthHeader(argv.serverTypeFront, argv.serverTypeBack, req.headers.authorization),
+          determineFilename(req.url, argv.serverTypeFront),
+          req.headers['content-type'], req,
+          argv.serverTypeBack,
+          determineExistingETag(req),
+          argv.tlsConfBack, function (err, data) {
+        if (err) {
+          res.writeHead(500);
+          res.end(err.toString());
+        } else {
+          res.writeHead(data.statusCode, data.responseHeaders);
+          res.end(data.responseBody);
+        }
+      });
+    }
   };
 }
+
 module.exports.makeSend = makeSend;
 module.exports.makeHandler = makeHandler;
