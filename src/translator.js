@@ -113,12 +113,15 @@ function determineExistingETag(req) {
 }
 
 function serveOwnCloudStatus(res) {
-  res.writeHead(200);
+  res.writeHead(200, {
+    'Content-Type': 'application/json'
+  });
   res.end('{"installed":true,"maintenance":false,"version":"8.0.0.7","versionstring":"8.0","edition":""}');
 }
 
 function makeHandler(argv, send) {
   return function(req, res) {
+    console.log('req.url', req.url);
     if (req.url === '/status.php' && argv.serverTypeFront === 'owncloud') {
       serveOwnCloudStatus(res);
     } else {
