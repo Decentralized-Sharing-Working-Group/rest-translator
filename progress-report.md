@@ -24,4 +24,21 @@ Right, we said we are interested in server-to-server sharing, not client-to-serv
 one server to another is possible with ownCloud, but it does not use WebDAV. It is also possible between two Swell servers, although
 again, it does not use the REST interface for it. This means that the original plan will not work.
 
-The new short-term plan is to translate ownCloud OCS to Cozy Files App. I will try to demo that soon.
+# OCS-to-anything
+
+We adapted the translator proxy so that it can receive files via ownCloud OCS, and deliver them to the Cozy Files App. If we put in
+some work, we can make this a real feature, to be shipped with Cozy.
+
+It would also not be that hard to add remoteStorage and Swell as destinations for this OCS-receive-dialog.
+
+# Sharing files from any to any server
+
+On any server there can be a file browser, with a 'share this file' button, so you can get a share URL.
+
+On that share page, there can be a 'view on your own server' button.
+
+This cannot be solved with a proxy. It would require new functionality in:
+
+* the Cozy Files app
+* the Swell graphical user interface
+* the remoteStorage file browser (e.g. https://export.5apps.com/)
