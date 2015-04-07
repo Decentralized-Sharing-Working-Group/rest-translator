@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Store shared file on your server</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <form method="POST" target="">
+      You are receiving the file <span id="name">(name)</span> from <span id="owner">(owner)</span>.
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" value="Upsc0D0Xruhe9bj5qB3U4HcZidDEkAgd">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" value="dC4KvlfBwqriMJ3aCAjG6qLddPkPgr5z">
+      <input type="submit" value="Store on your server">
+      <input type="hidden" name="remote" id="remote">
+      <input type="hidden" name="token" id="token">
+      <input type="hidden" name="protected" id="protected">
+    </form>
+  </body>
+  <script>
+    function assign(pair, equalsPos, id, field) {
+      console.log('assign', pair, equalsPos, id, field);
+      if (pair.substring(0, id.length) === id) {
+        document.getElementById(id)[field] = pair.substring(equalsPos +1);
+      }
+    }
+    function parseParams() {
+      var i, equalsPos, pair, pairs = location.href.substring(location.href.indexOf('#')+1).split('&');
+      console.log(pairs);
+      for (i=0; i<pairs.length; i++) {
+        pair = decodeURIComponent(pairs[i]);
+        equalsPos = pair.indexOf('=');
+        assign(pair, equalsPos, 'name', 'innerHTML');
+        assign(pair, equalsPos, 'owner', 'innerHTML');
+        assign(pair, equalsPos, 'remote', 'value');
+        assign(pair, equalsPos, 'token', 'value');
+        assign(pair, equalsPos, 'protected', 'value');
+      }
+    }
+
+    //...
+    parseParams();
+  </script>
+</html>

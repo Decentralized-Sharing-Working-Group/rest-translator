@@ -1,8 +1,41 @@
+var fs = require('fs'),
+    https = require('https'),
+    formidable = require('formidable'),
+    request_new = require('request');
+
 function makeSend(requestLib) {
   return function(operation, backendHost, backendPort, backendPath, token, filename, contentType,
       stream, formatOut, existingETag, tlsConf, callback) {
     console.log('send', operation, backendHost, backendPort, backendPath, token, filename, contentType,
          stream, formatOut, existingETag, tlsConf, callback);
+    if (formatOut === 'cozy') {
+      var formData = {
+        name: filename,
+        path:'',
+        file: stream
+      };
+      var req = request_new.defaults({jar: true});
+      console.log('logging in...');
+      var remoteClient = req.post({url: "https://paulsharing2.cozycloud.cc/login", qs: {username: "owner", password: "sharing2"}}, function(err, res, body) {
+        console.log('logged in', err, body);
+        if(err) {
+          return console.error(err);
+        } else {
+          console.log('posting...');
+          req.post({url: "https://paulsharing2.cozycloud.cc/apps/files/files", formData: formData}, function(err, res, body) {
+            console.log('posted', err, body);
+            if (err) {
+              callback(err);
+            } else {
+              console.log("code : " + res.statusCode);
+              console.log("body : " + JSON.stringify(body));
+              callback(null, 'file was saved to your Cozy');
+            }
+          });
+        }
+      });
+      return;
+    }
     var verb = {
       create: 'PUT',
       read: 'GET',
@@ -20,7 +53,7 @@ function makeSend(requestLib) {
       method: verb[operation],
       path: backendPath
           + filename
-          + (formatOut === 'cozy' ? '/raw' : ''),
+          + (formatOut === 'couchdb' ? '/raw' : ''),
       headers: {
         'Content-Type': contentType,
         Authorization: (formatOut === 'remotestorage' ? 'Bearer ' : 'Basic ') + token
@@ -138,7 +171,15 @@ function fetch(serverTypeFront, shareParams, callback) {
     return;
   }
   req = https.request(fetchOptions, callback);
-  req.send();
+  req.end();
+}
+
+function makeToken(serverTypeBack, usernameBack, passwordBack) {
+  if (serverTypeBack === 'remotestorage') {
+    return passwordBack;
+  } else {
+    return new Buffer(usernameBack + ':' + passwordBack).toString('base64');
+  }
 }
 
 function makeAuthHeader(serverTypeBack, usernameBack, passwordBack) {
@@ -148,13 +189,15 @@ function makeAuthHeader(serverTypeBack, usernameBack, passwordBack) {
     return 'Basic ' + new Buffer(usernameBack + ':' + passwordBack).toString('base64');
   }
 }
-function fetchAndDeliver(argv, send, fields) {
-  fetch(argv.serverTypeFront, fields.shareParams, function(res) {
-    var authHeaderBack = makeAuthHeader(argv.serverTypeBack, fields.username, fields.password);
-    send('create', argv.hostBack, argv.portBack, argv.basePathBack, authHeaderBack, shareParams.token /*used as the filename here*/,
-        res.headers['content-type'], req /*used as a stream here*/,
+function fetchAndDeliver(argv, send, fields, callback) {
+  console.log('fetchAndDeliver', fields);
+  fetch(argv.serverTypeFront, { token: fields.token, remote: fields.remote }, function(res) {
+    var tokenBack = makeToken(argv.serverTypeBack, fields.username, fields.password);
+    send('create', argv.hostBack, argv.portBack, argv.basePathBack, tokenBack, fields.token /*used as the filename here*/,
+        res.headers['content-type'], res /*used as a stream here*/,
         argv.serverTypeBack, undefined, undefined, function(err, data) {
-      console.log('fetched and delivered', shareParams, err, data);
+      console.log('back in fetchAndDeliver', err, data, typeof callback);
+      callback(err, fields.token /*used as the filename here*/);
     });
   });
 }
@@ -172,6 +215,8 @@ function receiveFormPost(req, res, callback) {
 function determineRedirectUrl(argv, filename) {
   if (argv.serverTypeBack === 'remotestorage') {
     return 'https://' + argv.hostBack + ':' + argv.portBack + argv.basePathBack + '/public/shares/' + filename;
+  } else {
+    return 'https://paulsharing2.cozycloud.cc/#apps/files/';
   }
 }
 
@@ -186,6 +231,7 @@ function makeHandler(argv, send) {
       } else {
         receiveFormPost(req, res, function(fields) {
           fetchAndDeliver(argv, send, fields, function(err, filename) {
+            console.log('back in handler', err, filename);
             if (err) {
               res.writeHead(500);
               res.end(err);
@@ -193,6 +239,7 @@ function makeHandler(argv, send) {
               res.writeHead(301, {
                 Location: determineRedirectUrl(argv, filename)
               });
+              res.end('Saved.');
             }
           });
         });
