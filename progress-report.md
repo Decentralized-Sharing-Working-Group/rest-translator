@@ -45,3 +45,12 @@ This cannot be solved with a proxy. It would require new functionality in:
 * the remoteStorage file browser (e.g. https://export.5apps.com/)
 
 Is this the way we want to go?
+
+#UPDATE:
+
+Another option is to consider not the problem of sending a file or folder, but of mounting one.
+
+A mounted share means the receiving server remembers how to access the resource on the sending server,
+and will contact the sending server in real-time each time the user opens or refreshes the page.
+
+This solves the problem of staying up to date with changing files and folders.
