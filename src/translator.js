@@ -67,7 +67,7 @@ function makeSend(requestLib) {
     if (tlsConf === 'allow-self-signed') {
       options.rejectUnauthorized = false;
     }
-    
+
     console.log('sending request', options, tlsConf);
     var req = requestLib.request(options, function(res) {
       var ret = {
@@ -75,7 +75,7 @@ function makeSend(requestLib) {
         responseHeaders: res.headers,
         responseBody: ''
       };
-  
+
       if (streamDirection[operation] === 'out') {
         res.pipe(stream);
         ret.responseBody = '(streamed)';
@@ -84,11 +84,11 @@ function makeSend(requestLib) {
           ret.responseBody += chunk.toString('utf-8');
         });
       }
-  
+
       res.on('error', function(err) {
         callback(err);
       });
-  
+
       res.on('end', function() {
         callback(null, ret);
       });
@@ -149,12 +149,12 @@ function serveOwnCloudStatus(res) {
   res.writeHead(200, {
     'Content-Type': 'application/json'
   });
-  res.end('{"installed":true,"maintenance":false,"version":"8.0.0.7","versionstring":"8.0","edition":""}');
+  res.end('{"installed":true,"maintenance":false,"version":"7.0.0.0","versionstring":"7.0","edition":""}');
 }
 
 function displayReceiveDialog(res) {
   fs.createReadStream('./receiveDialog.html').pipe(res);
-}  
+}
 function fetch(serverTypeFront, shareParams, callback) {
   var fetchOptions, remoteStringParts, req;
   console.log('getFetchOptions', serverTypeFront, shareParams);
@@ -215,8 +215,10 @@ function receiveFormPost(req, res, callback) {
 function determineRedirectUrl(argv, filename) {
   if (argv.serverTypeBack === 'remotestorage') {
     return 'https://' + argv.hostBack + ':' + argv.portBack + argv.basePathBack + '/public/shares/' + filename;
+  } else if (argv.serverTypeBack === 'cozyfiles') {
+    return 'https://' + argv.hostBack + '/#apps/files/';
   } else {
-    return 'https://paulsharing2.cozycloud.cc/#apps/files/';
+    return '';
   }
 }
 
