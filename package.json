@@ -1,6 +1,6 @@
 {
-  "name": "decentralized-sharing-client",
-  "repository": "https://github.com/Decentralized-Sharing-Working-Group/server-to-server",
+  "name": "rest-translator",
+  "repository": "https://github.com/Decentralized-Sharing-Working-Group/rest-translator",
   "version": "0.0.0",
   "dependencies": {
     "yargs": "*",
@@ -20,5 +20,5 @@
     "test-jshint": "jshint ./*.js ./src/*.js --config ./test/.jshintrc",
     "start": "./startall.sh"
   },
-  "main": "server.js"
+  "main": "src/translator.js"
 }
