@@ -3,38 +3,41 @@ var fs = require('fs'),
     formidable = require('formidable'),
     request_new = require('request');
 
+function sendToCozy(filename, stream, host, username, password) {
+  var formData = {
+    name: filename,
+    path: '',
+    file: stream
+  };
+  var req = request_new.defaults({jar: true});
+  //console.log('logging in...');
+  var remoteClient = req.post({url: 'https://' + host + '/login', qs: {username: username, password: password}}, function(err, res, body) {
+    //console.log('logged in', err, body);
+    if(err) {
+      return console.error(err);
+    } else {
+      //console.log('posting...');
+      req.post({url: 'https://' + host + '/apps/files/files', formData: formData}, function(err, res, body) {
+        //console.log('posted', err, body);
+        if (err) {
+          callback(err);
+        } else {
+          //console.log('code : ' + res.statusCode);
+          //console.log('body : ' + JSON.stringify(body));
+          callback(null, 'file was saved to your Cozy');
+        }
+      });
+    }
+  });
+}
+
 function makeSend(requestLib) {
   return function(operation, backendHost, backendPort, backendPath, token, filename, contentType,
       stream, formatOut, existingETag, tlsConf, callback) {
     console.log('send', operation, backendHost, backendPort, backendPath, token, filename, contentType,
          stream, formatOut, existingETag, tlsConf, callback);
     if (formatOut === 'cozy') {
-      var formData = {
-        name: filename,
-        path:'',
-        file: stream
-      };
-      var req = request_new.defaults({jar: true});
-      console.log('logging in...');
-      var remoteClient = req.post({url: "https://paulsharing2.cozycloud.cc/login", qs: {username: "owner", password: "sharing2"}}, function(err, res, body) {
-        console.log('logged in', err, body);
-        if(err) {
-          return console.error(err);
-        } else {
-          console.log('posting...');
-          req.post({url: "https://paulsharing2.cozycloud.cc/apps/files/files", formData: formData}, function(err, res, body) {
-            console.log('posted', err, body);
-            if (err) {
-              callback(err);
-            } else {
-              console.log("code : " + res.statusCode);
-              console.log("body : " + JSON.stringify(body));
-              callback(null, 'file was saved to your Cozy');
-            }
-          });
-        }
-      });
-      return;
+      return sendToCozy(filename, stream, backendHost, 'owner', 'sharing2');
     }
     var verb = {
       create: 'PUT',
